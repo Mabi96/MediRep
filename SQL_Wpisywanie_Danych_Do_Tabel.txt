@@ -1,0 +1,80 @@
+USE [BAZA]
+GO
+
+INSERT INTO [dbo].[Oddział] (Nazwa) 
+SELECT ( 'Anestezjologii i intensywnej terapii') UNION ALL
+SELECT ('Chirurgii urazowej I ortopedii') UNION ALL
+SELECT ('Neurologiczny') UNION ALL
+SELECT ('Chirurgii ogólnej')
+
+GO
+
+INSERT INTO [dbo].[Lekarz] (Imię, Nazwisko, Id_Oddziału) 
+SELECT 'Paweł', 'Kościerski', 1 UNION ALL
+SELECT 'Andrzej', 'Lubelski', 3 UNION ALL
+SELECT 'Anna', 'Polowicz', 2 UNION ALL
+SELECT 'Eugeniusz', 'Rosiński', 4
+
+GO
+
+INSERT INTO [dbo].[Pielęgniarka] (Imię, Nazwisko, Id_Oddziału) 
+SELECT ('Anna', 'Kowalska', 1)
+SELECT ('Katarzyna', 'Dąbrowska', 1)
+SELECT ('Paulina', 'Jeżycka', 3)
+SELECT ('Anna', 'Kowalska', 1)
+SELECT ('Anna', 'Kowalska', 1)
+SELECT ('Anna', 'Kowalska', 1)
+SELECT ('Anna', 'Kowalska', 1)
+SELECT ('Anna', 'Kowalska', 1)
+
+
+SET IDENTITY_INSERT [dbo].[Pielęgniarka] ON 
+GO
+INSERT [dbo].[Pielęgniarka] ([Id], [Imię], [Nazwisko], [Id_Oddziału]) VALUES (1, N'Anna', N'Kowalska', 1)
+GO
+INSERT [dbo].[Pielęgniarka] ([Id], [Imię], [Nazwisko], [Id_Oddziału]) VALUES (2, N'Katarzyna', N'Dąbrowska', 1)
+GO
+INSERT [dbo].[Pielęgniarka] ([Id], [Imię], [Nazwisko], [Id_Oddziału]) VALUES (3, N'Paulina', N'Jeżycka', 3)
+GO
+INSERT [dbo].[Pielęgniarka] ([Id], [Imię], [Nazwisko], [Id_Oddziału]) VALUES (4, N'Katarzyna', N'Lewska', 2)
+GO
+INSERT [dbo].[Pielęgniarka] ([Id], [Imię], [Nazwisko], [Id_Oddziału]) VALUES (5, N'Joanna', N'Kowalska', 2)
+GO
+SET IDENTITY_INSERT [dbo].[Pielęgniarka] OFF
+GO
+INSERT [dbo].[Pacjent] ([Id], [Imię], [Nazwisko], [Pesel]) VALUES (1, N'Marcin', N'Poniatowski', N'87642384731')
+GO
+INSERT [dbo].[Pacjent] ([Id], [Imię], [Nazwisko], [Pesel]) VALUES (2, N'Paweł', N'Krzęsny', N'4382736492')
+GO
+INSERT [dbo].[Pacjent] ([Id], [Imię], [Nazwisko], [Pesel]) VALUES (3, N'Natalia', N'Celinowska', N'72636428912')
+GO
+INSERT [dbo].[Pacjent] ([Id], [Imię], [Nazwisko], [Pesel]) VALUES (4, N'Aleksander', N'Pawłowski', N'72638793426')
+GO
+INSERT [dbo].[Pacjent] ([Id], [Imię], [Nazwisko], [Pesel]) VALUES (5, N'Monika', N'Komińska', N'63548294621')
+GO
+INSERT [dbo].[Pacjent] ([Id], [Imię], [Nazwisko], [Pesel]) VALUES (6, N'Alicja', N'Barańska', N'52375486597')
+GO
+INSERT [dbo].[Pacjent] ([Id], [Imię], [Nazwisko], [Pesel]) VALUES (7, N'Karol', N'Nowak', N'86485636283')
+GO
+SET IDENTITY_INSERT [dbo].[Adres] ON 
+GO
+INSERT [dbo].[Adres] ([Id], [Id_Pacjenta], [Miasto], [Ulica], [Numer_Domu], [Numer_MIeszkania], [Kod_pocztowy]) VALUES (2, 3, N'Łódz', N'ul. Józefa Lorskeigo', 12, 3, N'23-423')
+GO
+SET IDENTITY_INSERT [dbo].[Adres] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Środki] ON 
+GO
+INSERT [dbo].[Środki] ([Id], [Id_Pakietu], [Nazwa], [Postać], [Jednostka_miary], [Jednostka]) VALUES (2, NULL, N'Rękawice chr. jał bezpudrowe lateksowe', N'Rękawice', N'para [1 para]', N'para')
+GO
+INSERT [dbo].[Środki] ([Id], [Id_Pakietu], [Nazwa], [Postać], [Jednostka_miary], [Jednostka]) VALUES (3, NULL, N'Strzykawka jałowa 10 ml.', N'Strzykawaka', N'szt. [1szt.].', N'szt.')
+GO
+INSERT [dbo].[Środki] ([Id], [Id_Pakietu], [Nazwa], [Postać], [Jednostka_miary], [Jednostka]) VALUES (8, NULL, N'Strzykawka jałowa 12 ml.', N'Strzykawaka', N'szt. 1 [szt.].', N'szt.')
+GO
+INSERT [dbo].[Środki] ([Id], [Id_Pakietu], [Nazwa], [Postać], [Jednostka_miary], [Jednostka]) VALUES (10, NULL, N'Strzykawka jałowa 8 ml.', N'Strzykawka', N'szt. 1 [szt.].', N'szt.')
+GO
+INSERT [dbo].[Środki] ([Id], [Id_Pakietu], [Nazwa], [Postać], [Jednostka_miary], [Jednostka]) VALUES (14, NULL, N'Rękawice diagnostyczne nitrylowe', N'Rękawice', N'para [1 para]', N'para')
+GO
+INSERT [dbo].[Środki] ([Id], [Id_Pakietu], [Nazwa], [Postać], [Jednostka_miary], [Jednostka]) VALUES (15, NULL, N'Opatrunek typu ELEX', N'Opatrunek', N'szt 1 [szt.].', N'szt.')
+GO
+INSERT [dbo].[Środki] ([Id], [Id_Pakietu], [Nazwa], [Postać], [Jednostka_miary], [Jednostka]) VALUES (18, NULL, N'Opatrunek pooperacyjny', N'Opatrunek', N'szt 1 [szt.].', N'szt.')
+GO

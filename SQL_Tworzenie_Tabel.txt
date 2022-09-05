@@ -1,0 +1,118 @@
+CREATE DATABASE [SzpitalDB]
+
+GO
+
+USE [SzpitalDB]
+
+GO
+
+CREATE TABLE [dbo].[Oddział] (
+
+    [Id]    INT           IDENTITY (1, 1) NOT NULL,
+    [Nazwa] NVARCHAR (50) NOT NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC)
+
+)
+
+GO
+
+CREATE TABLE [dbo].[Pakiet] (
+    [Id]    INT           IDENTITY (1, 1) NOT NULL,
+    [Nazwa] NVARCHAR (50) NOT NULL,
+    CONSTRAINT [Pakiet_PK] PRIMARY KEY NONCLUSTERED ([Id] ASC),
+)ON [PRIMARY]
+
+GO
+
+CREATE TABLE [dbo].[Środki] (
+    [Id]              INT           IDENTITY (1, 1) NOT NULL,
+    [Id_Pakietu]      INT           NULL,
+    [Nazwa]           NVARCHAR (50) NOT NULL,
+    [Postać]          NVARCHAR (50) NOT NULL,
+    [Jednostka_miary] NVARCHAR (50) NOT NULL,
+    [Jednostka]       NVARCHAR (50) NOT NULL,
+    CONSTRAINT [Środki_PK] PRIMARY KEY NONCLUSTERED ([Id] ASC),
+    CONSTRAINT [FK_Środki_Pakiet] FOREIGN KEY ([Id_Pakietu]) REFERENCES [dbo].[Pakiet] ([Id])
+)ON [PRIMARY]
+
+GO
+
+CREATE TABLE [dbo].[Lekarz] 
+(
+    [Id]          INT           IDENTITY (1, 1) NOT NULL,
+    [Imię]        NVARCHAR (50) NOT NULL,
+    [Nazwisko]    NVARCHAR (50) NOT NULL,
+    [Id_Oddziału] INT           NOT NULL,
+    CONSTRAINT [Lekarz_PK] PRIMARY KEY NONCLUSTERED ([Id] ASC),
+    CONSTRAINT [FK_Lekarz_Oddział] FOREIGN KEY ([Id_Oddziału]) REFERENCES [dbo].[Oddział] ([Id])
+)ON [PRIMARY]
+
+GO
+
+CREATE TABLE [dbo].[Pielęgniarka] 
+(
+    [Id]          INT           IDENTITY (1, 1) NOT NULL,
+    [Imię]        NVARCHAR (50) NULL,
+    [Nazwisko]    NVARCHAR (50) NULL,
+    [Id_Oddziału] INT           NOT NULL,
+    CONSTRAINT [Pielęgniarka_PK] PRIMARY KEY NONCLUSTERED ([Id] ASC),
+    CONSTRAINT [FK_Pielęgniarka_Oddział] FOREIGN KEY ([Id_Oddziału]) REFERENCES [dbo].[Oddział] ([Id])
+)ON [PRIMARY]
+
+GO
+
+CREATE TABLE [dbo].[Pacjent]
+(
+    [Id]       INT           NOT NULL,
+    [Imię]     NVARCHAR (50) NOT NULL,
+    [Nazwisko] NVARCHAR (50) NOT NULL,
+    [Pesel]    VARCHAR (11)  NOT NULL,
+    CONSTRAINT [Pacjent_PK] PRIMARY KEY NONCLUSTERED ([Id] ASC)
+)ON [PRIMARY]
+
+GO
+
+CREATE TABLE [dbo].[Adres] 
+(
+    [Id]           INT           IDENTITY (1, 1) NOT NULL,
+    [Id_Pacjenta]  INT           NOT NULL,
+    [Miasto]       NVARCHAR (50) NOT NULL,
+    [Ulica]        NVARCHAR (50) NOT NULL,
+    [Numer_Domu]   INT NOT NULL,
+    [Numer_Mieszkania]   INT NOT NULL,
+    [Kod_pocztowy] NVARCHAR (50) NOT NULL,
+    CONSTRAINT [Adres_PK] PRIMARY KEY NONCLUSTERED ([Id] ASC),
+    CONSTRAINT [FK_Pacjent_Adres] FOREIGN KEY ([Id_Pacjenta]) REFERENCES [dbo].[Pacjent] ([Id])
+)ON [PRIMARY]
+
+GO
+
+
+CREATE TABLE [dbo].[Raport] 
+(
+    [Id]              INT  IDENTITY (1, 1) NOT NULL,
+    [Id_Pacjenta]     INT  NOT NULL,
+    [Id_Lekarza]      INT  NOT NULL,
+    [Id_Pielęgniarki] INT  NOT NULL,
+    [Data]            DATE NOT NULL,
+    CONSTRAINT [Raport_PK] PRIMARY KEY NONCLUSTERED ([Id] ASC),
+    CONSTRAINT [FK_Raport_Lekarz] FOREIGN KEY ([Id_Lekarza]) REFERENCES [dbo].[Lekarz] ([Id]),
+    CONSTRAINT [FK_Raport_Pacjent] FOREIGN KEY ([Id_Pacjenta]) REFERENCES [dbo].[Pacjent] ([Id]),
+    CONSTRAINT [FK_Raport_Pielęgniarka] FOREIGN KEY ([Id_Pielęgniarki]) REFERENCES [dbo].[Pielęgniarka] ([Id])
+)ON [PRIMARY]
+
+GO
+
+CREATE TABLE [dbo].[Pozycja_raportu] 
+(
+    [Id]            INT             IDENTITY (1, 1) NOT NULL,
+    [Id_Środku]     INT             NOT NULL,
+    [Id_Raportu]    INT             NOT NULL,
+    [Ilość_podana]  DECIMAL (18, 2) NOT NULL,
+    [Ilość_pobrana] DECIMAL (18, 2) NOT NULL,
+    [Dawka]         NVARCHAR (50)   NOT NULL,
+    CONSTRAINT [Pozycja_Raportu_PK] PRIMARY KEY NONCLUSTERED ([Id] ASC, [Id_Raportu]),
+    CONSTRAINT [FK_Pozycja_raportu_Raport] FOREIGN KEY ([Id_Raportu]) REFERENCES [dbo].[Raport] ([Id]),
+    CONSTRAINT [FK_Pozycja_raportu_Środki] FOREIGN KEY ([Id_Środku]) REFERENCES [dbo].[Środki] ([Id])
+)ON [PRIMARY]
+
